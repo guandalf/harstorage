@@ -76,9 +76,9 @@ class SuperposedController(BaseController):
 
         # Number of records
         if c.chart == "true" and c.table == "true" and init != "true":
-            c.rowcount = len(request.GET) / 3 - 1
+            c.rowcount = len(request.GET) / 4 - 1
         else:
-            c.rowcount = len(request.GET) / 3
+            c.rowcount = len(request.GET) / 4
 
         # Data table
         c.headers = ["Label", "Full Load Time (ms)", "Total Requests",
@@ -103,11 +103,13 @@ class SuperposedController(BaseController):
             # Parameters from GET request
             label = request.GET["step_" + str(row_index + 1) + "_label"]
             start_ts = request.GET["step_" + str(row_index + 1) + "_start_ts"]
-            end_ts = request.GET["step_" + str(row_index + 1) + "_end_ts"]
+            end_ts   = request.GET["step_" + str(row_index + 1) + "_end_ts"]
+            desc     = request.GET["step_" + str(row_index + 1) + "_desc"]
 
             # Add label
             c.metrics_table[0].append(label)
-            c.points += label + "#"
+            #c.points += label + '-' + start_ts + '-' + end_ts + "#"
+            c.points += desc + "#"
 
             # Fetch test results
             condition = {

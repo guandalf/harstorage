@@ -348,6 +348,7 @@ HARSTORAGE.Columns = function() {
     "use strict";
 };
 
+// TODO
 HARSTORAGE.Columns.prototype.draw = function(points, chart_type) {
     "use strict";
 
@@ -365,7 +366,7 @@ HARSTORAGE.Columns.prototype.draw = function(points, chart_type) {
     new Highcharts.Chart({
         chart: {
             renderTo: "chart",
-            defaultSeriesType: chart_type
+            defaultSeriesType: chart_type,
         },
         credits: {
             enabled: false
@@ -459,7 +460,8 @@ HARSTORAGE.RunInfo = function(mode, label, query, histo) {
     if (query !== "None") {
         agg_btn.style.display = "inline";
         agg_btn.onclick = function() {
-            location.href = query.replace(/amp;/g,"") + "&chart=column&table=true";
+            var temphref = query.replace(label, encodeURIComponent(label));
+            location.href = temphref.replace(/amp;/g,"") + "&chart=column&table=true";
         };
     }
 
@@ -826,7 +828,7 @@ HARSTORAGE.RunInfo.prototype.del = function(id, mode, all) {
         var ts_selector = document.getElementById("run_timestamp");
         var timestamp   = ts_selector.options[ts_selector.selectedIndex].text;
         var URI = "deleterun?timestamp=" + timestamp;
-            URI += "&label=" + id;
+            URI += "&label=" + encodeURIComponent(id);
             URI += "&mode=" + mode;
             URI += "&all=" + all;
 
@@ -929,6 +931,12 @@ HARSTORAGE.SuperposeForm = function() {
         that.setTimestamps(this.name);
     };
 
+    // Month submit button event handler
+//    var m_submit = document.getElementById("m_submit");
+//    m_submit.onclick = function() {
+//        return that.m_submit();
+//    };
+
     // Submit button event handler
     var submit = document.getElementById("submit");
     submit.onclick = function() {
@@ -949,15 +957,39 @@ HARSTORAGE.SuperposeForm = function() {
     del.style.display = "none";
 
     // Chart options
-    var checkbox = document.getElementById("column");
-    checkbox.onclick = function() {
-        that.checkbox(this);
-    };
+//    var checkbox = document.getElementById("column");
+//    checkbox.onclick = function() {
+//        that.checkbox(this);
+//    };
 
-    checkbox = document.getElementById("spline");
-    checkbox.onclick = function() {
-        that.checkbox(this);
-    };
+//    checkbox = document.getElementById("spline");
+//    checkbox.onclick = function() {
+//        that.checkbox(this);
+//    };
+};
+
+// Form transformation
+HARSTORAGE.SuperposeForm.prototype.m_submit = function() {
+    "use strict";
+
+    var selectors = document.getElementsByTagName("select");
+
+    for (var i = 0, len = selectors.length/3; i < len; i += 1) {
+        var id = 1 + i*3;
+
+        var start_ts    = selectors.item(id).options[ selectors.item(id).options.selectedIndex ].value;
+        var end_ts      = selectors.item(id+1).options[ selectors.item(id+1).options.selectedIndex ].value;
+
+        if (end_ts < start_ts) {
+            window.alert("Invalid timestamps!");
+            return false;
+        }
+    }
+
+    var form = document.getElementById("superpose-form");
+    form.onsubmit = "return true;";
+
+    return true;
 };
 
 // Form validation
@@ -987,6 +1019,12 @@ HARSTORAGE.SuperposeForm.prototype.submit = function() {
 // Add new step
 HARSTORAGE.SuperposeForm.prototype.add = function(button) {
     "use strict";
+
+    var isDecendant = function (decendant,ancestor){
+        return ((decendant.parentNode==ancestor)  ||
+            (decendant.parentNode!=document) &&
+                isDecendant(decendant.parentNode,ancestor));
+    };
 
     var i,
         len,
@@ -1065,6 +1103,11 @@ HARSTORAGE.SuperposeForm.prototype.add = function(button) {
             inputs.item(i).onclick = function() {
                 that.del(this);
             };
+            break;
+        case prev_id + "_desc":
+            // Set new id
+            inputs.item(i).id = new_id + "_desc";
+            inputs.item(i).name = new_id + "_desc";
             break;
         default:
             break;
@@ -1170,7 +1213,7 @@ HARSTORAGE.SuperposeForm.prototype.setTimestamps = function(id) {
     // Request data via XHR or read from cache
     var select = document.getElementById(id);
     var label = select.options[select.selectedIndex].text;
-    this.URI = "dates?label=" + label;
+    this.URI = "dates?label=" + encodeURIComponent(label);
 
     this.xhr = new XMLHttpRequest();
 
@@ -1202,6 +1245,7 @@ HARSTORAGE.SuperposeForm.prototype.checkbox = function(input) {
 
     var id1  = "spline",
         id2  = "column",
+        id3  = "bar",
         id;
 
     if (input.checked) {
