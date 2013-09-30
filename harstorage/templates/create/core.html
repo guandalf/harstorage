@@ -5,106 +5,61 @@
 
 ${dochead.html("Superposed Tests")}
 ${header.html()}
-<center>
-    <div class="sp-create">
-        <div class="howto">
-            <a href="http://code.google.com/p/harstorage/wiki/SuperposedTests" target="_blank"><strong>How to aggregate and compare results?</strong></a>
-        </div>
-
-        <div class="spinner" id="spinner"></div>
-
-        <div class="form">
-            <form action="display" id="superpose-form" method="get" onsubmit="return false;">
-                <fieldset>
-                    <legend>Aggregate and Compare</legend>
-
-                    <div id="container">
-                        <div id="step_1" class="container">
-                            <div class="title" id="step_1_head" >Set 1 &gt;</div>
-                            <div class="text">Label:</div>
-
-                            <select name="step_1_label" id="step_1_label" class="slct-label">
-                                % for label in c.labels:
-                                <option value="${label}">${label}</option>
-                                % endfor
-                            </select>
-
-                            <div class="text">Start Time:</div>
-
-                            <select name="step_1_start_ts" id="step_1_start_ts" class="slct-start" >
-                            </select>
-
-                            <div class="text">End Time:</div>
-
-                            <select name="step_1_end_ts" id="step_1_end_ts" class="slct-end" >
-                            </select>
-
-                            <input id="step_1_desc" type="text" name="step_1_desc" value="" />
-
-                            <input id="step_1_add" type="image" src="/images/add_button.png"    class="image" />
-                            <input id="step_1_del" type="image" src="/images/remove_button.png" class="image" />
-                        </div>
-                    </div>
-
-                    <div>
-                        <input type="radio" class="checkbox" id="column" name="chart" value="column" checked="yes" /><span class="checkbox-text">Column Chart</span>
-                        <input type="radio" class="checkbox" id="spline" name="chart" value="spline" /><span class="checkbox-text">Spline Chart</span>
-                        <input type="radio" class="checkbox" id="bar" name="chart" value="bar" /><span class="checkbox-text">Bar Chart</span>
-                        <input type="checkbox" class="checkbox" name="table" value="true" checked="yes" /><span class="checkbox-text">Data Table</span><br />
-                        <input type="submit" class="submit" id="submit" value="View Result" />
-                    </div>
-                </fieldset>
-            </form>
-        </div>
+<div class="sp-create container">
+    <div class="howto">
+        <a href="http://code.google.com/p/harstorage/wiki/SuperposedTests" target="_blank"><strong>How to aggregate and compare results?</strong></a>
     </div>
-<!--
-    <div class="sp-create">
 
-        <div class="form">
-            <form action="display" id="superpose-form" method="get" onsubmit="return false;">
-                <fieldset>
-                    <legend>Aggregate and Compare</legend>
+    <div class="spinner" id="spinner"></div>
 
-                    <div id="container">
-                        <div id="step_1" class="container">
-                            <div class="title" id="step_1_head" >Set 1 &gt;</div>
-                            <div class="text">Label:</div>
+    <form action="display" id="superpose-form" method="get" onsubmit="return false;" role="form" class="form-inline">
+        <legend>Aggregate and Compare</legend>
 
-                            <select name="step_1_label" id="step_1_label" class="slct-label">
-                                % for label in c.labels:
-                                <option value="${label}">${label}</option>
-                                % endfor
-                            </select>
+        <div id="container">
+            <div id="step_1">
+                <div class="form-group">
+                    <label for="step_1_label">Label:</label>
+                    <select name="step_1_label" id="step_1_label" class="form-control">
+                        % for label in c.labels:
+                        <option value="${label}">${label}</option>
+                        % endfor
+                    </select>
+                </div>
 
-                            <div class="text">Start Time:</div>
-
-                            <select name="step_1_start_ts" id="step_1_start_ts" class="slct-start" >
-                            </select>
-
-                            <div class="text">End Time:</div>
-
-                            <select name="step_1_end_ts" id="step_1_end_ts" class="slct-end" >
-                            </select>
-
-                            <input id="step_1_desc" type="text" name="step_1_desc" value="" />
-
-                            <input id="step_1_add" type="image" src="/images/add_button.png"    class="image" />
-                            <input id="step_1_del" type="image" src="/images/remove_button.png" class="image" />
-                        </div>
+                <div class="form-group">
+                    <label for="step_1_start_ts">Start:</label>
+                    <div class="input-group" id="step_1_start_group">
+                        <input name="step_1_start_ts" id="step_1_start_ts" data-format="yyyy-MM-dd hh:mm:ss" class="form-control" />
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                     </div>
+                </div>
 
-                    <div>
-                        <input type="radio" class="checkbox" id="column" name="chart" value="column" checked="yes" /><span class="checkbox-text">Column Chart</span>
-                        <input type="radio" class="checkbox" id="spline" name="chart" value="spline" /><span class="checkbox-text">Spline Chart</span>
-                        <input type="radio" class="checkbox" id="bar" name="chart" value="bar" /><span class="checkbox-text">Bar Chart</span>
-                        <input type="checkbox" class="checkbox" name="table" value="true" checked="yes" /><span class="checkbox-text">Data Table</span><br />
-                        <input type="submit" class="submit" id="submit" value="View Result" />
+                <div class="form-group">
+                    <label for="step_1_end_ts">End:</label>
+                    <div class="input-group" id="step_1_end_group">
+                        <input name="step_1_end_ts" id="step_1_end_ts" data-format="yyyy-MM-dd hh:mm:ss" class="form-control" />
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                     </div>
-                </fieldset>
-            </form>
+                </div>
+
+                <div class="form-group">
+                    <label for="step_1_desc">Description</label>
+                    <input id="step_1_desc" type="text" name="step_1_desc" value="" placeholder="Enter description" class="form-control" />
+                </div>
+
+                <input id="step_1_add" type="image" src="/images/add_button.png" />
+                <input id="step_1_del" type="image" src="/images/remove_button.png" />
+            </div>
         </div>
-    </div>
--->
-</center>
+
+        <div class="well">
+            <input type="radio" class="checkbox" id="column" name="chart" value="column" checked="yes" /><span class="checkbox-text">Column Chart</span>
+            <input type="radio" class="checkbox" id="spline" name="chart" value="spline" /><span class="checkbox-text">Spline Chart</span>
+            <input type="radio" class="checkbox" id="bar" name="chart" value="bar" /><span class="checkbox-text">Bar Chart</span>
+            <input type="checkbox" class="checkbox" name="table" value="true" checked="yes" /><span class="checkbox-text">Data Table</span><br />
+            <button type="submit" id="submit" value="View Result" class="btn btn-default">Submit</button>
+        </div>
+    </form>
+</div>
 ${jsloader.html()}
 ${footer.html()}

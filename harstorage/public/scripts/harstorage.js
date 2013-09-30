@@ -995,7 +995,7 @@ HARSTORAGE.SuperposeForm.prototype.m_submit = function() {
 // Form validation
 HARSTORAGE.SuperposeForm.prototype.submit = function() {
     "use strict";
-
+/*
     var selectors = document.getElementsByTagName("select");
 
     for (var i = 0, len = selectors.length/3; i < len; i += 1) {
@@ -1009,7 +1009,7 @@ HARSTORAGE.SuperposeForm.prototype.submit = function() {
             return false;
         }
     }
-
+*/
     var form = document.getElementById("superpose-form");
     form.onsubmit = "return true;";
 
@@ -1037,94 +1037,108 @@ HARSTORAGE.SuperposeForm.prototype.add = function(button) {
         new_id = prev_id.split("_")[0] + "_" + ( parseInt ( prev_id.split("_")[1], 10) +1 );
 
     // Add new line to container
-    var prev_div = document.getElementById(prev_id),
-        new_div = prev_div.cloneNode(true);
+    //var prev_div = document.getElementById(prev_id),
+    //    new_div = prev_div.cloneNode(true);
 
-    new_div.setAttribute("id", new_id);
+    var $prev_div = $("#" + prev_id),
+       $new_div = $prev_div.clone();
 
-    var container = document.getElementById("container");
-    container.appendChild(new_div);
+    $new_div.attr("id", new_id);
+
+    //var container = document.getElementById("container");
 
     // Update name and id of selectors
-    var selectors = new_div.getElementsByTagName("select");
+    //var selectors = new_div.getElementsByTagName("select");
+    $new_div.find('label').each(function(){
+        $(this).attr('for', new_id + "_label");
+    });
 
-    for (i = selectors.length; i -- ; ) {
-        switch (selectors.item(i).name) {
-        case prev_id + "_label":
-            selectors.item(i).name  = new_id + "_label";
-            selectors.item(i).id    = new_id + "_label";
-            selectors.item(i).onchange = function() {
-                that.setTimestamps(this.name);
-            };
-            break;
-        case prev_id + "_start_ts":
-            selectors.item(i).name  = new_id + "_start_ts";
-            selectors.item(i).id    = new_id + "_start_ts";
-            break;
-        case prev_id + "_end_ts":
-            selectors.item(i).name  = new_id + "_end_ts";
-            selectors.item(i).id    = new_id + "_end_ts";
-            break;
-        default:
-            break;
+    $new_div.find("select")
+    .each(function() {
+        var selector = $(this);
+        selector.attr("name", selector.attr("name").replace(prev_id, new_id));
+        selector.attr("id", selector.attr("id").replace(prev_id, new_id));
+        if(selector.attr("name") == new_id + "_label") {
+            selector.bind("change", function() {
+                that.setTimestamps($(this).attr("name"));
+            });
         }
-    }
+    });
 
     // Update inputs
-    var inputs = new_div.getElementsByTagName("input");
-
-    for (i = 0, len = inputs.length; i < len; i += 1) {
-        switch (inputs.item(i).id) {
+    $new_div.find("input")
+    .each(function() {
+        var inputs = $(this);
+        switch (inputs.attr('id')) {
         case prev_id + "_add":
             // Set new id
-            inputs.item(i).id = new_id + "_add";
+            inputs.attr('id', new_id + "_add");
 
             // Hide previous button
-            prev_button = document.getElementById(prev_id + "_add");
-            prev_button.style.display = "none";
+            $("." + prev_id + "_add").css('display', 'none');
 
             // Set event handler
-            inputs.item(i).onclick = function() {
+            inputs.bind("click", function() {
                 that.add(this);
-            };
+            });
             break;
         case prev_id + "_del":
             // Set new id
-            inputs.item(i).id = new_id + "_del";
+            inputs.attr('id', new_id + "_del");
 
             // Hide previous button
-            prev_button = document.getElementById(prev_id + "_del");
-            prev_button.style.display = "none";
+            $("." + prev_id + "_del").css('display', 'none');
 
             // Show current button
-            inputs.item(i).style.display = "inline";
+            inputs.css('display', "inline");
 
             // Set event handler
-            inputs.item(i).onclick = function() {
+            inputs.bind("click", function() {
                 that.del(this);
-            };
+            });
             break;
         case prev_id + "_desc":
             // Set new id
-            inputs.item(i).id = new_id + "_desc";
-            inputs.item(i).name = new_id + "_desc";
+            inputs.attr('id', new_id + "_desc");
+            inputs.attr('name', new_id + "_desc");
+            break;
+        case prev_id + "_start_ts":
+            // Set new id
+            inputs.attr('id', new_id + "_start_ts");
+            inputs.attr('name', new_id + "_start_ts");
+            break;
+        case prev_id + "_end_ts":
+            // Set new id
+            inputs.attr('id', new_id + "_end_ts");
+            inputs.attr('name', new_id + "_end_ts");
             break;
         default:
             break;
         }
-    }
+    });
     // Update head
-    var divs = new_div.getElementsByTagName("div");
-
-    for (i = 0, len = divs.length; i < len; i += 1) {
-        if (divs.item(i).id === prev_id + "_head" ) {
+    $new_div.find("div")
+    .each(function(divs) {
+        var divs = $(this);
+        switch (divs.attr('id')) {
+        case prev_id + "_head":
             // New id
-            divs.item(i).id = new_id + "_head";
-
-            // New label
-            divs.item(i).innerHTML = "Set " + new_id.split("_")[1] + " &gt;";
+            divs.id = new_id + "_head";
+            break;
+        case prev_id + "_start_group":
+            // Set new id
+            divs.attr('id', new_id + "_start_group");
+            break;
+        case prev_id + "_end_group":
+            // Set new id
+            divs.attr('id', new_id + "_end_group");
+            break;
+        default:
+            break;
         }
-    }
+    });
+
+    $new_div.appendTo("#container");
 
     // Update timestamp
     this.setTimestamps(new_id + "_label");
@@ -1161,6 +1175,8 @@ HARSTORAGE.SuperposeForm.prototype.del = function(button) {
 HARSTORAGE.SuperposeForm.prototype.setTimestamps = function(id) {
     "use strict";
 
+    console.log("Setting label:" + id);
+
     // Poiner
     var that = this;
 
@@ -1186,28 +1202,36 @@ HARSTORAGE.SuperposeForm.prototype.setTimestamps = function(id) {
         if (typeof(that.cache[that.URI]) === "undefined") {
             that.dates = that.xhr.responseText.split(";");
             that.cache[that.URI] = that.dates;
-        } else {
-            that.dates.reverse();
         }
+
+        var start_ts = new Date(that.dates[0]);
+        var end_ts = new Date(that.dates[1]);
 
         // Start timestamps
-        var select = document.getElementById(id + "_start_ts");
-        select.options.length = 0;
-
-        for (i = 0, len = that.dates.length; i < len; i += 1) {
-            ts = that.dates[i];
-            select.options[i] = new Option(ts, ts, false, false);
-        }
+        that.start_ts_input = $("#" + id + "_start_group").datetimepicker({
+            startDate: start_ts,
+            endDate: end_ts,
+            language: 'it-IT'
+        });
+        that.start_ts_input.on('changeDate', function(ev) {
+//            if(ev.date.valueOf() > that.end_ts_input.valueOf()) {
+                var newDate = new Date(ev.date);
+                newDate.setDate(newDate.getDate() + 1);
+                that.end_ts_input.datetimepicker('setStartDate', newDate);
+                that.start_ts_input.datetimepicker('hide');
+//            }
+            $("#" + id + "_end_ts").focus();
+        });
 
         // End timestamps
-        select = document.getElementById(id + "_end_ts");
-        select.options.length = 0;
-        that.dates.reverse();
-
-        for (i = 0, len = that.dates.length; i < len; i += 1) {
-            ts = that.dates[i];
-            select.options[i] = new Option(ts, ts, false, false);
-        }
+        that.end_ts_input = $("#" + id + "_end_group").datetimepicker({
+            startDate: start_ts,
+            endDate: end_ts,
+            language: 'it-IT'
+        });
+        that.end_ts_input.on('changeDate', function(ev) {
+            that.end_ts_input.datetimepicker('hide');
+        });
     };
 
     // Request data via XHR or read from cache
@@ -1222,6 +1246,8 @@ HARSTORAGE.SuperposeForm.prototype.setTimestamps = function(id) {
             set_data();
         }
     };
+
+    console.log(this.cache);
 
     if (typeof(this.cache[this.URI]) === "undefined") {
         this.xhr.open("GET", this.URI, true);

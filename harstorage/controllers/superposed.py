@@ -44,16 +44,19 @@ class SuperposedController(BaseController):
         label = request.GET["label"]
 
         # Read data from database
-        documents = MongoDB().collection.find(
+        start = MongoDB().collection.find_one(
             {"label": label},
             fields=["timestamp"],
             sort=[("timestamp", 1)])
 
-        dates = str()
-        for document in documents:
-            dates += document["timestamp"] + ";"
+        end = MongoDB().collection.find_one(
+            {"label": label},
+            fields=["timestamp"],
+            sort=[("timestamp", -1)])
 
-        return dates[:-1]
+        tmp_start_ts = start["timestamp"].replace(" ", "T")
+        tmp_end_ts = end["timestamp"].replace(" ", "T")
+        return "{0};{1}".format(tmp_start_ts, tmp_end_ts)
 
     @restrict("GET")
     def display(self):
