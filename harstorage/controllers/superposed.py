@@ -79,12 +79,12 @@ class SuperposedController(BaseController):
 
         # Number of records
         if c.chart == "true" and c.table == "true" and init != "true":
-            c.rowcount = len(request.GET) / 4 - 1
+            c.rowcount = len(request.GET) / 5 - 1
         else:
-            c.rowcount = len(request.GET) / 4
+            c.rowcount = len(request.GET) / 5
 
         # Data table
-        c.headers = ["Label", "Full Load Time (ms)", "Total Requests",
+        c.headers = ["Label", "Samples", "Filtered", "Full Load Time (ms)", "Total Requests",
                      "Total Size (kB)", "Page Speed Score",
                      "onLoad Event (ms)", "Start Render Time (ms)",
                      "Time to First Byte (ms)", "Total DNS Time (ms)",
@@ -93,6 +93,8 @@ class SuperposedController(BaseController):
                      "Text Size (kB)", "Media Size (kB)", "Cache Size (kB)",
                      "Redirects", "Bad Rquests", "Domains"]
         c.metrics_table = list()
+        c.metrics_table.append(list())
+        c.metrics_table.append(list())
         c.metrics_table.append(list())
 
         # Chart points
@@ -108,6 +110,7 @@ class SuperposedController(BaseController):
             start_ts = request.GET["step_" + str(row_index + 1) + "_start_ts"]
             end_ts   = request.GET["step_" + str(row_index + 1) + "_end_ts"]
             desc     = request.GET["step_" + str(row_index + 1) + "_desc"]
+            peak     = request.GET["step_" + str(row_index + 1) + "_threshold"]
 
             # Add label
             c.metrics_table[0].append(label)
@@ -117,16 +120,27 @@ class SuperposedController(BaseController):
             # Fetch test results
             condition = {
                 "label": label,
-                "timestamp": {"$gte": start_ts, "$lte": end_ts}
+                "timestamp": {"$gte": start_ts, "$lte": end_ts},
+                "full_load_time": {"$lt": int(peak)}
             }
             documents = md_handler.collection.find(condition,
                                                    fields=aggregator.METRICS)
 
+            excondition = {
+                "label": label,
+                "timestamp": {"$gte": start_ts, "$lte": end_ts},
+                "full_load_time": {"$gte": int(peak)}
+            }
+            excluded = md_handler.collection.find(excondition,
+                                                   fields=aggregator.METRICS)
+
             # Add data row to aggregator
             aggregator.add_row(label, row_index, documents)
+            c.metrics_table[1].append(documents.count())
+            c.metrics_table[2].append(excluded.count())
 
         # Aggregated data per column
-        column = 1
+        column = 3
         for metric in aggregator.METRICS:
             c.metrics_table.append(list())
             c.points = c.points[:-1] + ";"
@@ -140,6 +154,7 @@ class SuperposedController(BaseController):
                 c.metrics_table[column].append(value)
 
             column += 1
+
 
         # Names of series
         titles = str()

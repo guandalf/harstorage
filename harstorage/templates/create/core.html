@@ -16,8 +16,8 @@ ${header.html()}
         <legend>Aggregate and Compare</legend>
 
         <div id="container">
-            <div id="step_1">
-                <div class="form-group">
+            <div class="row" id="step_1">
+                <div class="form-group col-lg-2">
                     <label for="step_1_label">Label:</label>
                     <select name="step_1_label" id="step_1_label" class="form-control">
                         % for label in c.labels:
@@ -26,7 +26,7 @@ ${header.html()}
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group col-lg-3">
                     <label for="step_1_start_ts">Start:</label>
                     <div class="input-group" id="step_1_start_group">
                         <input name="step_1_start_ts" id="step_1_start_ts" data-format="yyyy-MM-dd hh:mm:ss" class="form-control" />
@@ -34,7 +34,7 @@ ${header.html()}
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group col-lg-3">
                     <label for="step_1_end_ts">End:</label>
                     <div class="input-group" id="step_1_end_group">
                         <input name="step_1_end_ts" id="step_1_end_ts" data-format="yyyy-MM-dd hh:mm:ss" class="form-control" />
@@ -42,13 +42,20 @@ ${header.html()}
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group col-lg-2">
                     <label for="step_1_desc">Description</label>
                     <input id="step_1_desc" type="text" name="step_1_desc" value="" placeholder="Enter description" class="form-control" />
                 </div>
 
-                <input id="step_1_add" type="image" src="/images/add_button.png" />
-                <input id="step_1_del" type="image" src="/images/remove_button.png" />
+                <div class="form-group col-lg-1">
+                    <label for="step_1_threshold">Filter</label>
+                    <input id="step_1_threshold" type="text" name="step_1_threshold" value="10000" placeholder="ms" class="form-control" />
+                </div>
+
+                <div class="col-lg-1">
+                    <input id="step_1_add" type="image" src="/images/add_button.png" />
+                    <input id="step_1_del" type="image" src="/images/remove_button.png" />
+                </div>
             </div>
         </div>
 

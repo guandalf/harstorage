@@ -1097,6 +1097,11 @@ HARSTORAGE.SuperposeForm.prototype.add = function(button) {
                 that.del(this);
             });
             break;
+        case prev_id + "_threshold":
+            // Set new id
+            inputs.attr('id', new_id + "_threshold");
+            inputs.attr('name', new_id + "_threshold");
+            break;
         case prev_id + "_desc":
             // Set new id
             inputs.attr('id', new_id + "_desc");
