@@ -1175,8 +1175,6 @@ HARSTORAGE.SuperposeForm.prototype.del = function(button) {
 HARSTORAGE.SuperposeForm.prototype.setTimestamps = function(id) {
     "use strict";
 
-    console.log("Setting label:" + id);
-
     // Poiner
     var that = this;
 
@@ -1208,29 +1206,33 @@ HARSTORAGE.SuperposeForm.prototype.setTimestamps = function(id) {
         var end_ts = new Date(that.dates[1]);
 
         // Start timestamps
-        that.start_ts_input = $("#" + id + "_start_group").datetimepicker({
-            startDate: start_ts,
-            endDate: end_ts,
-            language: 'it-IT'
-        });
-        that.start_ts_input.on('changeDate', function(ev) {
+        if(typeof(start_ts_input) === "undefined") {
+            var start_ts_input = $("#" + id + "_start_group").datetimepicker({
+                language: 'it-IT'
+            });
+        }
+        start_ts_input.datetimepicker('setStartDate', start_ts);
+        start_ts_input.datetimepicker('setEndDate', end_ts);
+        start_ts_input.on('changeDate', function(ev) {
 //            if(ev.date.valueOf() > that.end_ts_input.valueOf()) {
                 var newDate = new Date(ev.date);
                 newDate.setDate(newDate.getDate() + 1);
-                that.end_ts_input.datetimepicker('setStartDate', newDate);
-                that.start_ts_input.datetimepicker('hide');
+                end_ts_input.datetimepicker('setStartDate', newDate);
+                start_ts_input.datetimepicker('hide');
 //            }
             $("#" + id + "_end_ts").focus();
         });
 
         // End timestamps
-        that.end_ts_input = $("#" + id + "_end_group").datetimepicker({
-            startDate: start_ts,
-            endDate: end_ts,
-            language: 'it-IT'
-        });
-        that.end_ts_input.on('changeDate', function(ev) {
-            that.end_ts_input.datetimepicker('hide');
+        if(typeof(end_ts_input) === "undefined") {
+            var end_ts_input = $("#" + id + "_end_group").datetimepicker({
+                language: 'it-IT'
+            });
+        }
+        end_ts_input.datetimepicker('setStartDate', start_ts);
+        end_ts_input.datetimepicker('setEndDate', end_ts);
+        end_ts_input.on('changeDate', function(ev) {
+            end_ts_input.datetimepicker('hide');
         });
     };
 
@@ -1238,6 +1240,7 @@ HARSTORAGE.SuperposeForm.prototype.setTimestamps = function(id) {
     var select = document.getElementById(id);
     var label = select.options[select.selectedIndex].text;
     this.URI = "dates?label=" + encodeURIComponent(label);
+    console.log("Setting label:" + this.URI);
 
     this.xhr = new XMLHttpRequest();
 
