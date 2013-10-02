@@ -6,6 +6,7 @@ import time
 import re
 import functools
 import platform
+import copy
 
 from pylons import request, response, tmpl_context as c
 from pylons import config
@@ -17,6 +18,7 @@ from harstorage.lib.HAR import HAR
 from harstorage.lib.MongoHandler import MongoDB
 import harstorage.lib.helpers as h
 
+from couchbase import Couchbase
 
 class ResultsController(BaseController):
 
@@ -371,7 +373,9 @@ class ResultsController(BaseController):
                 scores = dict([("Total Score", 100)])
 
             # Add document to collection
-            timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            t = time.localtime()
+            timestamp = time.strftime("%Y-%m-%d %H:%M:%S", t)
+            cb_timestamp = time.strftime("%Y-%m-%dT%H:%M:%S", t)
 
             result = {"label": har.label,
                       "url": har.url,
@@ -404,6 +408,16 @@ class ResultsController(BaseController):
             if hasattr(c, "message"):
                 return False, c.message
             else:
+                if config['app_conf']['cb_update'] == 'true':
+                    cb_result = copy.deepcopy(result)
+                    cb = Couchbase.connect(config['app_conf']['cb_collection'],
+                                           username=config['app_conf']['cb_username'],
+                                           password=config['app_conf']['cb_password']
+                                           )
+                    cb_result['timestamp'] = cb_timestamp
+                    cb_result['har'] = json.loads(cb_result['har'])
+                    key = "{0}-{1}".format(cb_result['timestamp'], cb_result['label'])
+                    res = cb.set(key, cb_result)
                 mdb_handler.collection.insert(result)
 
             return True, har.label
