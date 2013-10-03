@@ -19,6 +19,7 @@ from harstorage.lib.MongoHandler import MongoDB
 import harstorage.lib.helpers as h
 
 from couchbase import Couchbase
+from couchbase.exceptions import KeyExistsError
 
 class ResultsController(BaseController):
 
@@ -377,9 +378,7 @@ class ResultsController(BaseController):
                 scores = dict([("Total Score", 100)])
 
             # Add document to collection
-            t = time.localtime()
-            timestamp = time.strftime("%Y-%m-%d %H:%M:%S", t)
-            cb_timestamp = time.strftime("%Y-%m-%dT%H:%M:%S", t)
+            timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
             result = {"label": har.label,
                       "url": har.url,
@@ -412,18 +411,19 @@ class ResultsController(BaseController):
             if hasattr(c, "message"):
                 return False, c.message
             else:
+                print(config['app_conf']['cb_host'])
                 if config['app_conf']['cb_update'] == 'true':
                     cb_result = copy.deepcopy(result)
+                    cb_result['har'] = json.loads(cb_result['har'])
+                    key = "{0}-{1}".format(cb_result['timestamp'].replace(' ', 'T'), cb_result['label'].replace(' ', '_'))
                     cb = Couchbase.connect(bucket=config['app_conf']['cb_collection'],
                                            host=config['app_conf']['cb_host'],
-                                           port=config['app_conf']['cb_port'],
-                                           username=config['app_conf']['cb_username'],
-                                           password=config['app_conf']['cb_password']
+                                           timeout=15
                                            )
-                    cb_result['timestamp'] = cb_timestamp
-                    cb_result['har'] = json.loads(cb_result['har'])
-                    key = "{0}-{1}".format(cb_result['timestamp'], cb_result['label'])
-                    res = cb.set(key, cb_result)
+                    try:
+                        res = cb.set(key, cb_result)
+                    except KeyExistsError:
+                        pass
                 mdb_handler.collection.insert(result)
 
             return True, har.label
