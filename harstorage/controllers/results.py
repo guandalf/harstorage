@@ -414,7 +414,9 @@ class ResultsController(BaseController):
             else:
                 if config['app_conf']['cb_update'] == 'true':
                     cb_result = copy.deepcopy(result)
-                    cb = Couchbase.connect(config['app_conf']['cb_collection'],
+                    cb = Couchbase.connect(bucket=config['app_conf']['cb_collection'],
+                                           host=config['app_conf']['cb_host'],
+                                           port=config['app_conf']['cb_port'],
                                            username=config['app_conf']['cb_username'],
                                            password=config['app_conf']['cb_password']
                                            )
