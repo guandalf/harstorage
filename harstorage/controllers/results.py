@@ -58,12 +58,16 @@ class ResultsController(BaseController):
         the list
         '''
         latest_results = mdb_handler.collection.aggregate(
-            [{"$group":{"_id": {"label":"$label", "url":"$url"},
-            "timestamp":{"$last":"$timestamp"},
-            "total_size":{"$last":"$total_size"},
-            "requests":{"$last":"$requests"},
-            "full_load_time": {"$last":"$full_load_time"}}},
-            {"$sort":{"timestamp" : -1}}])
+            [
+                {"$sort": {"timestamp": 1}},
+                {"$group": {"_id": {"label": "$label", "url": "$url"},
+                            "timestamp": {"$last": "$timestamp"},
+                            "total_size": {"$last": "$total_size"},
+                            "requests": {"$last": "$requests"},
+                            "full_load_time": {"$last": "$full_load_time"}
+                            }
+                 },
+            ])
 
         '''
         Get the number of records
