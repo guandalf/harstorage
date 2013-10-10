@@ -16,10 +16,10 @@ ${header.html()}
         <legend>Aggregate and Compare</legend>
 
         <div id="container">
-            <div class="row" id="step_1">
+            <div class="row" id="s_1">
                 <div class="form-group col-lg-2">
-                    <label for="step_1_label">Label:</label>
-                    <select name="step_1_label" id="step_1_label" class="form-control">
+                    <label for="s_1_label">Label:</label>
+                    <select name="s_1_label" id="s_1_label" class="form-control">
                         % for label in c.labels:
                         <option value="${label}">${label}</option>
                         % endfor
@@ -27,34 +27,34 @@ ${header.html()}
                 </div>
 
                 <div class="form-group col-lg-3">
-                    <label for="step_1_start_ts">Start:</label>
-                    <div class="input-group" id="step_1_start_group">
-                        <input name="step_1_start_ts" id="step_1_start_ts" data-format="yyyy-MM-dd hh:mm:ss" class="form-control" />
+                    <label for="s_1_start_ts">Start:</label>
+                    <div class="input-group" id="s_1_start_group">
+                        <input name="s_1_start_ts" id="s_1_start_ts" data-format="yyyy-MM-dd hh:mm:ss" class="form-control" />
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                     </div>
                 </div>
 
                 <div class="form-group col-lg-3">
-                    <label for="step_1_end_ts">End:</label>
-                    <div class="input-group" id="step_1_end_group">
-                        <input name="step_1_end_ts" id="step_1_end_ts" data-format="yyyy-MM-dd hh:mm:ss" class="form-control" />
+                    <label for="s_1_end_ts">End:</label>
+                    <div class="input-group" id="s_1_end_group">
+                        <input name="s_1_end_ts" id="s_1_end_ts" data-format="yyyy-MM-dd hh:mm:ss" class="form-control" />
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                     </div>
                 </div>
 
                 <div class="form-group col-lg-2">
-                    <label for="step_1_desc">Description</label>
-                    <input id="step_1_desc" type="text" name="step_1_desc" value="" placeholder="Enter description" class="form-control" />
+                    <label for="s_1_desc">Description</label>
+                    <input id="s_1_desc" type="text" name="s_1_desc" value="" placeholder="Enter description" class="form-control" />
                 </div>
 
                 <div class="form-group col-lg-1">
-                    <label for="step_1_threshold">Filter</label>
-                    <input id="step_1_threshold" type="text" name="step_1_threshold" value="10000" placeholder="ms" class="form-control" />
+                    <label for="s_1_threshold">Filter</label>
+                    <input id="s_1_threshold" type="text" name="s_1_threshold" value="10000" placeholder="ms" class="form-control" />
                 </div>
 
                 <div class="col-lg-1">
-                    <input id="step_1_add" type="image" src="/images/add_button.png" />
-                    <input id="step_1_del" type="image" src="/images/remove_button.png" />
+                    <input id="s_1_add" type="image" src="/images/add_button.png" />
+                    <input id="s_1_del" type="image" src="/images/remove_button.png" />
                 </div>
             </div>
         </div>

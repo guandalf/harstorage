@@ -106,6 +106,8 @@ class Aggregator():
             return int(round(total_sum / num, 0))
         except TypeError:
             return "n/a"
+        except ZeroDivisionError:
+            return 0
 
     def minimum(self, results):
         """

@@ -926,7 +926,7 @@ HARSTORAGE.SuperposeForm = function() {
     this.cache = {};
 
     // Select box event handler
-    var selector = document.getElementById("step_1_label");
+    var selector = document.getElementById("s_1_label");
     selector.onchange = function() {
         that.setTimestamps(this.name);
     };
@@ -944,13 +944,13 @@ HARSTORAGE.SuperposeForm = function() {
     };
 
     // Add button event handler
-    var add = document.getElementById("step_1_add");
+    var add = document.getElementById("s_1_add");
     add.onclick = function() {
         that.add(this);
     };
 
     // Delete button event handler
-    var del = document.getElementById("step_1_del");
+    var del = document.getElementById("s_1_del");
     del.onclick = function() {
         that.del(this);
     };
@@ -1144,6 +1144,7 @@ HARSTORAGE.SuperposeForm.prototype.add = function(button) {
     });
 
     $new_div.appendTo("#container");
+    button.style.display = "none";
 
     // Update timestamp
     this.setTimestamps(new_id + "_label");
@@ -1170,7 +1171,7 @@ HARSTORAGE.SuperposeForm.prototype.del = function(button) {
     prev_button = document.getElementById(prev_id + "_add");
     prev_button.style.display = "inline";
 
-    if (prev_id !== "step_1") {
+    if (prev_id !== "s_1") {
         prev_button = document.getElementById(prev_id + "_del");
         prev_button.style.display = "inline";
     }

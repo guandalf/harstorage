@@ -411,7 +411,6 @@ class ResultsController(BaseController):
             if hasattr(c, "message"):
                 return False, c.message
             else:
-                print(config['app_conf']['cb_host'])
                 if config['app_conf']['cb_update'] == 'true':
                     cb_result = copy.deepcopy(result)
                     cb_result['har'] = json.loads(cb_result['har'])
@@ -422,8 +421,8 @@ class ResultsController(BaseController):
                                            )
                     try:
                         res = cb.set(key, cb_result)
-                    except KeyExistsError:
-                        pass
+                    except KeyExistsError as e:
+                        print(e, res)
                 mdb_handler.collection.insert(result)
 
             return True, har.label

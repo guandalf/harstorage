@@ -106,11 +106,11 @@ class SuperposedController(BaseController):
         # Test results from database
         for row_index in range(c.rowcount):
             # Parameters from GET request
-            label = request.GET["step_" + str(row_index + 1) + "_label"]
-            start_ts = request.GET["step_" + str(row_index + 1) + "_start_ts"]
-            end_ts   = request.GET["step_" + str(row_index + 1) + "_end_ts"]
-            desc     = request.GET["step_" + str(row_index + 1) + "_desc"]
-            peak     = request.GET["step_" + str(row_index + 1) + "_threshold"]
+            label = request.GET["s_" + str(row_index + 1) + "_label"]
+            start_ts = request.GET["s_" + str(row_index + 1) + "_start_ts"]
+            end_ts   = request.GET["s_" + str(row_index + 1) + "_end_ts"]
+            desc     = request.GET["s_" + str(row_index + 1) + "_desc"]
+            peak     = request.GET["s_" + str(row_index + 1) + "_threshold"]
 
             # Add label
             c.metrics_table[0].append(label)
@@ -152,9 +152,7 @@ class SuperposedController(BaseController):
 
                 c.points += str(value) + "#"
                 c.metrics_table[column].append(value)
-
             column += 1
-
 
         # Names of series
         titles = str()
