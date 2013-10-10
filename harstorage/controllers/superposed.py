@@ -120,24 +120,30 @@ class SuperposedController(BaseController):
             # Fetch test results
             condition = {
                 "label": label,
-                "timestamp": {"$gte": start_ts, "$lte": end_ts},
-                "full_load_time": {"$lt": int(peak)}
+                "timestamp": {"$gte": start_ts, "$lte": end_ts}
             }
+            if peak != '':
+                condition["full_load_time"] = {"$lt": int(peak)}
+
             documents = md_handler.collection.find(condition,
                                                    fields=aggregator.METRICS)
 
-            excondition = {
-                "label": label,
-                "timestamp": {"$gte": start_ts, "$lte": end_ts},
-                "full_load_time": {"$gte": int(peak)}
-            }
-            excluded = md_handler.collection.find(excondition,
+            if peak != '':
+                excondition = {
+                    "label": label,
+                    "timestamp": {"$gte": start_ts, "$lte": end_ts},
+                    "full_load_time": {"$gte": int(peak)}
+                }
+
+                excluded = md_handler.collection.find(excondition,
                                                    fields=aggregator.METRICS)
+                c.metrics_table[2].append(excluded.count())
+            else:
+                c.metrics_table[2].append(0)
 
             # Add data row to aggregator
             aggregator.add_row(label, row_index, documents)
             c.metrics_table[1].append(documents.count())
-            c.metrics_table[2].append(excluded.count())
 
         # Aggregated data per column
         column = 3
