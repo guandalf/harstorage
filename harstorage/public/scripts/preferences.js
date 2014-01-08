@@ -10,7 +10,7 @@ HARSTORAGE.create_cookie = function(name, value) {
     "use strict";
 
     document.cookie = name + "=" + value + ";" +
-                      "expires=Wed, 1 Jan 2014 00:00:00 UTC;" +
+                      "expires=Wed, 1 Jan 2019 00:00:00 UTC;" +
                       "path=/";
 };
 
