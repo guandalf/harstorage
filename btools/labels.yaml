@@ -1,0 +1,246 @@
+# label:
+# <country>
+# [<fields for the first query>]
+# <class for the dadabases for the second query or class for url>
+# <class for the dadabases for the first query>]
+# {headers}
+# <nagios service name>
+
+AR_CAT+:
+- ar
+- []
+- CATProdArPlus
+- CATStatsReportPlus
+- {}
+- Harstorage AR CAT +
+AT_CAT+:
+- at
+- [at_bridgeflow]
+- CATProdAtPlus
+- CATStatsReportPlus
+- {}
+- Harstorage AT CAT +
+BRA_CAT+:
+- bra
+- [bridge_CCC_flow]
+- CATProdBrPlus
+- CATStatsReportPlus
+- {}
+- Harstorage BRA CAT +
+CH_CAT+:
+- ch
+- [bridge_flow_ch]
+- CATProdChPlus
+- CATStatsReportPlus
+- {}
+- Harstorage CH CAT +
+DE_CAT:
+- de
+- [de_mobileicommon_v1]
+- CATUrl
+- CATStatsReport
+- {}
+- Harstorage DE CAT
+DE_CAT+:
+- de
+- [de_bridgeflow]
+- CATProdDePlus
+- CATStatsReportPlus
+- {}
+- Harstorage DE CAT +
+ES_CAT:
+- es
+- [mobileInternet, extSubscriptionFlow]
+- CATUrl
+- CATStatsReport
+- {}
+- Harstorage ES CAT
+ES_CAT+:
+- es
+- [catPlus]
+- CATProdEsPlus
+- CATStatsReportPlus
+- {x-forwarded-for: 213.30.36.217, x-up-calling-line-id: '627095637'}
+- Harstorage ES CAT +
+FR_CAT:
+- fr
+- [fr_mobile20, fr_mobile20updated]
+- CATUrl
+- CATStatsReport
+- {}
+- Harstorage FR CAT
+FR_CAT+:
+- fr
+- [fr_bridge]
+- CATProdFrPlus
+- CATStatsReportPlus
+- {}
+- Harstorage FR CAT +
+GR_CAT+:
+- gr
+- [bridge_flow]
+- CATProdGrPlus
+- CATStatsReportPlus
+- {}
+- Harstorage GR CAT +
+IN_CAT+:
+- in
+- []
+- CATProdInPlus
+- CATStatsReportPlus
+- {}
+- Harstorage IN CAT +
+IT_CAT:
+- it
+- [icontentviabos_flow]
+- CATUrl
+- CATStatsReport
+- {}
+- Harstorage IT CAT
+IT_CAT+:
+- it
+- [MI_Bridge_Flow]
+- CATProdItPlus
+- CATStatsReportPlus
+- {}
+- Harstorage IT CAT +
+IT_CAT+_Giochissimo:
+- it
+- []
+- CATUrlItPlusGiochissimo
+- CATUrlItPlusGiochissimo
+- {}
+- Harstorage IT CAT + Giochissimo
+MEX_CAT:
+- mex
+- [flow_20]
+- CATUrl
+- CATStatsReport
+- {}
+- Harstorage MEX CAT
+MEX_CAT+:
+- mex
+- [smt_bridge_flow]
+- CATProdMxPlus
+- CATStatsReportPlus
+- {}
+- Harstorage MEX CAT +
+NL_CAT+:
+- nl
+- [nl_bridge]
+- CATProdNlPlus
+- CATStatsReportPlus
+- {}
+- Harstorage NL CAT +
+NO_CAT+:
+- 'no'
+- [bridge_flow]
+- CATProdNoPlus
+- CATStatsReportPlus
+- {}
+- Harstorage NO CAT +
+PT_CAT:
+- pt
+- [mi_flow_pt]
+- CATUrl
+- CATStatsReport
+- {}
+- Harstorage PT CAT
+PT_CAT+:
+- pt
+- []
+- CATProdPtPlus
+- CATStatsReportPlus
+- {}
+- Harstorage PT CAT +
+RU_CAT:
+- ru
+- [wapmicommonflow]
+- CATUrl
+- CATStatsReport
+- {}
+- Harstorage RU CAT
+RU_CAT+:
+- ru
+- [ru_bridgeflow]
+- CATProdRuPlus
+- CATStatsReportPlus
+- {}
+- Harstorage RU CAT +
+TR_CAT:
+- tr
+- [icontentviabos_flow]
+- CATUrl
+- CATStatsReport
+- {}
+- Harstorage TR CAT
+TR_CAT+:
+- tr
+- [icontentbridge_flow]
+- CATProdTrPlus
+- CATStatsReportPlus
+- {}
+- Harstorage TR CAT +
+UK_CAT:
+- uk
+- [igameswapflow]
+- CATUrl
+- CATStatsReport
+- {}
+- Harstorage UK CAT
+UK_CAT+:
+- uk
+- [bridgeflow]
+- CATProdUkPlus
+- CATStatsReportPlus
+- {}
+- Harstorage UK CAT +
+US_CAT:
+- usa
+- [flowUSAwapSprint, flowUSAB2DADA]
+- CATProdUs
+- CATStatsReport
+- {}
+- Harstorage US CAT
+US_CAT+:
+- usa
+- [usa_bridgeflow]
+- CATProdUsPlus
+- CATStatsReportPlus
+- {}
+- Harstorage US CAT +
+WW_CHECK:
+- ww
+- []
+- CATUrlDummy
+- CATUrlDummy
+- {}
+- Harstorage WW CHECK
+ZA_CAT:
+- za
+- [za_bridgeflow]
+- CATProdZa
+- CATStatsReportZa
+- {}
+- Harstorage ZA CAT
+ZA_CAT+:
+- za
+- [za_bridgeflow]
+- CATProdZaPlus
+- CATStatsReportPlus
+- {}
+- Harstorage ZA CAT +
+KKO:
+- ww
+- []
+- CATUrlKko
+- CATUrlKko
+- {}
+- Harstorage KKO
+DVE:
+- ww
+- []
+- CATUrlDve
+- CATUrlDve
+- {}
+- Harstorage DVE
