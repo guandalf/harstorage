@@ -95,6 +95,32 @@ class CATProd(Base):
         return urls
 
 
+class CATUrlView(Base):
+    __tablename__ = 'URL_VIEW'
+
+    dbname = NotImplemented
+    id = Column(Integer, primary_key=True)
+    capid = Column(Integer)
+    enabled = Column(Integer)
+    landingUrl = Column(String)
+
+    def get_urls(self, country, capids, sessions):
+        urls = []
+        db2rows_q = sessions[self.dbname].query(self.__class__.landingUrl)\
+            .filter(self.__class__.capid.in_(capids))\
+            .filter_by(enabled=1)
+        logger.debug("Second query of: %s" % (self.__class__))
+        logger.debug(db2rows_q)
+        db2rows = db2rows_q.all()
+        map(lambda x: urls.append(x[0]), db2rows)
+        urls = filter(None, urls)
+
+        return urls
+
+class CATUrlViewZa(CATUrlView):
+    dbname = 'wwfcat_b2c_za'
+
+
 class CATStatsReportZa(CATStatsReport):
 
     def get_capid_query(self, c, dateselect, fT, sessions):        
@@ -102,9 +128,8 @@ class CATStatsReportZa(CATStatsReport):
                                            func.sum(CATStatsReport.total).label('capid_total'), 
                                            func.sum(case([(CATStatsReport.kpiID==1, CATStatsReport.total)], else_=0)).label('subs'))\
                                   .filter_by(country=c, date=dateselect)\
-                                  .filter(~CATStatsReport.flowType.in_(fT))\
+                                  .filter(CATStatsReport.productLandingid == '')\
                                   .group_by('CAPId')\
-                                  .having('subs > 5')\
                                   .order_by('capid_total desc')\
                                   .limit(5)
                                   
@@ -206,23 +231,6 @@ class CATProdAtPlus(CATProd):
 class CATProdZaPlus(CATProd):
     dbname = 'wwfcat_b2c_za'
 
-
-class CATProdZa(CATProd):
-    dbname = 'wwfcat_b2c_za'
-
-    def get_urls(self, country, capids, sessions):
-        urls = []
-        db2rows_q = sessions[self.dbname].query(self.__class__.moaUrl)\
-            .filter(self.__class__.id.in_(capids))\
-            .filter(self.__class__.creativityId==None)\
-            .filter_by(enabled=True)
-        logger.debug("Second query of: %s" % (self.__class__))
-        logger.debug(db2rows_q)
-        db2rows = db2rows_q.all()
-        map(lambda x: urls.append(x[0]), db2rows)
-        urls = filter(None, urls)
-        
-        return urls
 
 class CATProdUsPlus(CATProd):
     dbname = 'wwfcat_b2c_usa'

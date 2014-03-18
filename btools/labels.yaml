@@ -219,7 +219,7 @@ WW_CHECK:
 ZA_CAT:
 - za
 - [za_bridgeflow]
-- CATProdZa
+- CATUrlViewZa
 - CATStatsReportZa
 - {}
 - Harstorage ZA CAT
