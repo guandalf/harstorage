@@ -1,0 +1,3 @@
+# Configuration file for the bmproxy service
+
+BMPROXY_CONF='--port 19090'
