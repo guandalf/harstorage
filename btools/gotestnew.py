@@ -112,7 +112,7 @@ class HARRetriever():
                     to_send.append(('Harstorage green', peak.value[2]))
                     to_send.append(('Harstorage purple', peak.value[3]))
                 logging.log(logging.DEBUG, to_send)
-                smgmt_url = 'http://servicemanagement.cat.buongiorno.com/ServiceManagement/rest/nagios/store'
+                smgmt_url = 'http://192.168.27.25/ServiceManagement/rest/nagios/store'
                 time_sent = int(time() * 1000)
                 for t in to_send:
                     smgmt_data = {"hostName": sm_label,
