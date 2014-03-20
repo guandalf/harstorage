@@ -439,8 +439,8 @@ if __name__ == "__main__":
     parser.add_option('-l', '--harstoragelabel', action='store', type='string', dest='label', default='Default test', help='HAR file label')
     parser.add_option('-b', '--browsermobexe', action='store', type='string', dest='BMPEXE', default='/usr/local/browsermob-proxy/bin/browsermob-proxy', help='Browsermob Proxy executable full path')
     parser.add_option('-a', '--useragent', action='store', type='string', dest='UASTRING', default=None, help='User Agent String to setup firefox')
-    parser.add_option('-i', '--inputdirfile', action='store', type='string', dest='indirfile', default='/home/nagios/acq2harurls', help='Directory where store the urls')
-    parser.add_option('-O', '--outputdirfile', action='store', type='string', dest='outdirfile', default='/home/nagios/acq2harres', help='Directory where store results')
+    parser.add_option('-i', '--inputdirfile', action='store', type='string', dest='indirfile', default='/home/super/acq2harurls', help='Directory where store the urls')
+    parser.add_option('-O', '--outputdirfile', action='store', type='string', dest='outdirfile', default='/home/super/acq2harres', help='Directory where store results')
     parser.add_option('-d', '--debug', action='store_true', dest='debug', default=False, help='Overrides a lot of variables for debug purposes (DO NOT USE)')
 
     (options, args) = parser.parse_args(sys.argv[1:])

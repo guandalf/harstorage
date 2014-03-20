@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Harstorage - Stop and Start script for harstorage
+
+# chkconfig: 35 85 15
+# description: Harstorage.
+# processname: harstorage
+
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+PROJDIR="/var/www/qatools"
+PIDFILE="$PROJDIR/var/run/harstorage.pid"
+SOCKET="$PROJDIR/var/run/harstorage.sock"
+UWSGIINIFILE="${PROJDIR}/harstorage/production.ini"
+PYTHONPATH="/opt/rh/python27/root/usr/lib64/"
+
+cd ${PROJDIR}
+
+start() {
+        echo "Starting Harstorage WSGI (pid: ${PIDFILE})..."
+        LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${PYTHONPATH}" /home/super/harstorage/bin/uwsgi --ini-paste ${UWSGIINIFILE}
+}
+
+stop() {
+       if [ -f ${PIDFILE} ]; then
+          echo "Stopping Harstorage WSGI (${PIDFILE}, pid: `cat -- ${PIDFILE}`)..."
+          /home/super/harstorage/bin/uwsgi --stop ${PIDFILE}
+#         kill `cat -- ${PIDFILE}`
+#         sleep 2
+#         rm -f -- ${PIDFILE}
+       fi
+}
+
+restart() {
+        ${PROJDIR}/etc/init.d/harstorage stop
+        ${PROJDIR}/etc/init.d/harstorage start
+}
+
+case "$1" in
+    start)
+        $1
+        ;;
+    stop)
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|restart}"
+        exit 2
+esac
